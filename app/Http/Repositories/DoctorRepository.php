@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use App\Http\Enums\DoctorStatusEnum;
 use App\Http\Traits\UploadTrait;
 use App\Models\Appointment;
 use App\Models\AppointmentDoctor;
@@ -33,7 +34,7 @@ class DoctorRepository
         return $doctor;
     }
 
-    public function edit($doctorId)
+    public function edit(int $doctorId)
     {
         return $this->findDoctorById($doctorId);
     }
@@ -57,6 +58,23 @@ class DoctorRepository
     {
         $doctor = $this->findDoctorById(auth()->user()->id);
         $doctor->update($password);
+        return $doctor;
+
+    }
+
+    public function updateStatus(int $doctorId)
+    {
+        $doctor = $this->findDoctorById($doctorId);
+        if($doctor->status == DoctorStatusEnum::ACTIVE) {
+            $doctor->update([
+                'status' => DoctorStatusEnum::INACTIVE
+            ]);
+        }else {
+            $doctor->update([
+                'status' => DoctorStatusEnum::ACTIVE
+            ]);
+
+        }
         return $doctor;
 
     }

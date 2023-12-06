@@ -63,6 +63,12 @@ class DoctorService
         return $this->doctorRepository->updatePassword($request);
     }
 
+    public function updateStatus(int $doctorId)
+    {
+
+        return $this->doctorRepository->updateStatus($doctorId);
+    }
+
     public function destroy(int $doctorId)
     {
         try {

@@ -132,9 +132,10 @@
 
                                         <td>
                                             @if ($doctor->status == App\Http\Enums\DoctorStatusEnum::ACTIVE)
-                                                <span class="badge rounded-pill bg-success">active</span>
+                                                <a href="{{route('admin.doctors.updateStatus', $doctor->id)}}"<button class="badge rounded-pill bg-success">Active</button>
                                             @else
-                                                <span class="badge rounded-pill bg-danger">inactive</span>
+                                                <a href="{{route('admin.doctors.updateStatus', $doctor->id)}}"<button class="badge rounded-pill bg-danger">InActive</button>
+
                                             @endif
                                         </td>
                                         <td>

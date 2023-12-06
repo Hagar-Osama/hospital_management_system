@@ -159,19 +159,6 @@
                                     </div>
                                 </div>
                             </div>
-                            @php
-                                use App\Http\Enums\DoctorStatusEnum;
-                            @endphp
-
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label class="ckbox"><input type="checkbox" name="status"
-                                            value="{{ $doctor->status }}"
-                                            {{ $doctor->status == DoctorStatusEnum::ACTIVE ? 'checked' : '' }}><span>Status
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
                             <div class="col-12"><button class="btn btn-main-primary pd-x-20 mg-t-10"
                                     type="submit">Submit</button></div>
                         </div>

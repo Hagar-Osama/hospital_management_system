@@ -49,6 +49,7 @@ Route::group(
                 Route::prefix('/{doctorId}')->group(function () {
                     Route::get('/edit', [DoctorController::class, 'edit'])->name('edit');
                     Route::put('/update', [DoctorController::class, 'update'])->name('update');
+                    Route::put('/update/status', [DoctorController::class, 'updateStatus'])->name('updateStatus');
                     Route::delete('/delete', [DoctorController::class, 'destroy'])->name('destroy');
                 });
             });

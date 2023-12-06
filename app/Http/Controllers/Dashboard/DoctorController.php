@@ -8,9 +8,11 @@ use App\Http\Repositories\SectionRepository;
 use App\Http\Requests\CreateDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Http\Requests\UpdateStatusRequest;
 use App\Http\Services\DoctorService;
 use App\Http\Traits\UploadTrait;
 use App\Models\Appointment;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -43,18 +45,23 @@ class DoctorController extends Controller
     public function store(CreateDoctorRequest $request)
     {
         $imageName = '';
-        if ($request->hasFile('file_name')) {
-            $image = $request->file('file_name');
-            $imageName = $image->hashName();
-            $this->upload($image, 'doctors', $imageName);
-        }
+        try {
+            if ($request->hasFile('file_name')) {
+                $image = $request->file('file_name');
+                $imageName = $image->hashName();
+                $this->upload($image, 'doctors', $imageName);
+            }
 
-        $this->doctorService->store(
-            $request->all(),
-            $imageName
-        );
-        session()->flash('success', trans("dashboard/messages.add"));
-        return redirect()->route('admin.doctors.index');
+            $this->doctorService->store(
+                $request->all(),
+                $imageName
+            );
+            session()->flash('success', trans("dashboard/messages.add"));
+            return redirect()->route('admin.doctors.index');
+        } catch (Exception $e) {
+            $this->deleteFile('doctors/' . $imageName);
+            return redirect()->back()->withErrors('OOPS, something went wrong, Faild to add a doctor');
+        }
     }
 
 
@@ -72,6 +79,7 @@ class DoctorController extends Controller
     {
         $doctor = $this->doctorService->findDoctorById($doctorId);
         $imageName = $doctor->image->file_name ?? '';
+        try {
         if ($request->hasFile('file_name')) {
             $image = $request->file('file_name');
             $imageName = $image->hashName();
@@ -90,6 +98,10 @@ class DoctorController extends Controller
         );
         session()->flash('success', trans("dashboard/messages.edit"));
         return redirect()->route('admin.doctors.index');
+    } catch (Exception $e) {
+        $this->deleteFile('doctors/' . $imageName);
+        return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+    }
     }
 
     public function updatePassword(UpdatePasswordRequest $request)
@@ -100,6 +112,13 @@ class DoctorController extends Controller
 
         session()->flash('success', trans("dashboard/messages.edit"));
         return redirect()->route('admin.doctors.index');
+    }
+
+    public function updateStatus($doctorId)
+    {
+        $this->doctorService->updateStatus($doctorId);
+        session()->flash('success', trans("dashboard/messages.edit"));
+        return redirect()->back();
     }
 
     public function destroy($doctorId)
