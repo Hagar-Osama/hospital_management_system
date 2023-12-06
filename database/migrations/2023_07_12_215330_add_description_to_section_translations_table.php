@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('section_translations', function (Blueprint $table) {
-            $table->longText('description')->after('name');
+            $table->longText('description')->nullable()->after('name');
 
         });
     }

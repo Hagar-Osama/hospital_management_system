@@ -25,10 +25,9 @@ class CreateDoctorRequest extends FormRequest
             'name' => 'required|min:3|max:100',
             'email'=> 'required|email:filter|unique:doctors,email',
             'password'=> 'required|min:3|max:100',
-            'price'=> 'required',
             'phone'=> 'nullable',
-            // 'appointments'=> 'required|array',
-            // 'appointments.*' => 'required',
+            'appoints'=> 'required|array',
+            'appoints.*' => 'required',
             'file_name' => 'image|mimes:jpg,png,jpeg',
             'section_id' => 'required|exists:sections,id'
 

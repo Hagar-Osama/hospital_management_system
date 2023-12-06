@@ -80,7 +80,7 @@
                             <div class="col-6">
                                 <div class="form-group mg-b-0">
                                     <label class="form-label">Name: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" name="name" placeholder="Enter your name" required=""
+                                    <input class="form-control" name="name" autofocus placeholder="Enter your name" required=""
                                         type="text">
                                     @error('name')
                                         <span class="text-danger">{{ $message }}</span>
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-6">
+                            {{-- <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Price: <span class="tx-danger">*</span></label>
                                     <input class="form-control" name="price" placeholder="Enter price" required=""
@@ -116,7 +116,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col-6">
                                 <div class="form-group">
@@ -144,25 +144,23 @@
                                     @enderror
                                 </div>
                             </div>
-                            {{-- <div class="col-6">
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Appointments: <span class="tx-danger">*</span></label>
-                                    <select name="appointments[]" multiple="multiple"
+                                    <select name="appoints[]" multiple="multiple"
                                         onchange="console.log($(this).children(':selected').length)" class="selectsum1"
                                         required="">
-                                        <option value="Saturday">Saturday</option>
-                                        <option value="Sunday">Sunday</option>
-                                        <option value="Monday">Monday</option>
-                                        <option value="Tuesday">Tuesday</option>
-                                        <option value="Wedneday">Wednesday</option>
-                                        <option value="Thursday">Thursday</option>
-                                        <option value="Friday">Friday</option>
+                                        @foreach ($appointments as $appointment)
+                                        <option
+                                            value="{{$appointment->id}}">
+                                            {{$appointment->day}}</option>
+                                    @endforeach
                                     </select>
-                                    @error('appointments')
+                                    @error('appoints')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="card-body">
                                 <div>
                                     <label class="form-label">File Upload: <span class="tx-danger"></span></label>

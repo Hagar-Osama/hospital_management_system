@@ -7,8 +7,10 @@ use App\Http\Enums\DoctorStatusEnum;
 use App\Http\Repositories\SectionRepository;
 use App\Http\Requests\CreateDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Services\DoctorService;
 use App\Http\Traits\UploadTrait;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,7 +36,8 @@ class DoctorController extends Controller
     public function create()
     {
         $sections = $this->sectionRepository->index();
-        return view('dashboard.doctors.create', compact('sections'));
+        $appointments = $this->doctorService->getDoctorAppointments();
+        return view('dashboard.doctors.create', compact('sections', 'appointments'));
     }
 
     public function store(CreateDoctorRequest $request)
@@ -61,7 +64,8 @@ class DoctorController extends Controller
             $doctorId
         );
         $sections = $this->sectionRepository->index();
-        return view('dashboard.doctors.edit', compact('doctor', 'sections'));
+        $appointments = $this->doctorService->getDoctorAppointments();
+        return view('dashboard.doctors.edit', compact('doctor', 'sections', 'appointments'));
     }
 
     public function update(UpdateDoctorRequest $request, $doctorId)
@@ -88,13 +92,23 @@ class DoctorController extends Controller
         return redirect()->route('admin.doctors.index');
     }
 
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        if (Hash::check($request->current_password, auth()->user()->password)) {
+            $this->doctorService->updatePassword($request->all());
+        }
+
+        session()->flash('success', trans("dashboard/messages.edit"));
+        return redirect()->route('admin.doctors.index');
+    }
+
     public function destroy($doctorId)
     {
         $doctor = $this->doctorService->findDoctorById($doctorId);
         if ($doctor->image) {
             $this->deleteFile('doctors/' . $doctor->image->file_name);
         }
-        $this->doctorService->destroy( $doctorId);
+        $this->doctorService->destroy($doctorId);
         session()->flash('success', trans("dashboard/messages.delete"));
         return redirect()->route('admin.doctors.index');
     }
@@ -104,22 +118,17 @@ class DoctorController extends Controller
         return $this->doctorService->findDoctorById($doctorId);
     }
 
-    public function deleteAllDoctors(Request $request, $locale)
+    public function deleteAllDoctors(Request $request)
     {
-        $selectedDoctors = $request->get('selectedDoctors');
-        if (!$selectedDoctors) {
-            session()->flash('error', trans("dashboard/messages.error"));
-            return redirect()->back();
-        } else {
-            foreach ($request->selectedDoctors as $doctorId) {
-                $doctor = $this->doctorService->findDoctorById($doctorId);
-                if ($doctor->image) {
-                    $this->deleteFile('doctors/' . $doctor->image->file_name);
-                }
+        $selectedId = explode(',', $request->selectedId);
+        foreach ($selectedId as $doctorId) {
+            $doctor = $this->doctorService->findDoctorById($doctorId);
+            if ($doctor->image) {
+                $this->deleteFile('doctors/' . $doctor->image->file_name);
             }
-            $this->doctorService->deleteAllDoctors($locale, $request->get('selectedDoctors'));
-            session()->flash('success', trans("dashboard/messages.delete"));
-            return redirect()->route('admin.doctors.index');
         }
+        $this->doctorService->deleteAllDoctors($selectedId);
+        session()->flash('success', trans("dashboard/messages.delete"));
+        return redirect()->route('admin.doctors.index');
     }
 }

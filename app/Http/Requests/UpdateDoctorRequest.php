@@ -27,14 +27,11 @@ class UpdateDoctorRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:100',
             'email'=> 'required|email:filter|unique:doctors,email,'.$this->doctorId,
-            'password'=> 'min:3|max:100',
-            'price'=> 'required',
             'phone'=> 'sometimes',
-            // 'appointments'=> 'required|array',
-            // 'appointments.*' => 'required',
+            'appoints'=> 'required|array',
+            'appoints.*' => 'required',
             'file_name' => 'image|mimes:jpg,png,jpeg',
             'section_id' => 'required|exists:sections,id',
-            // 'status' => [Enum::rule(DoctorStatusEnum::class)]
 
         ];
     }

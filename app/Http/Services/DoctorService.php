@@ -57,6 +57,12 @@ class DoctorService
         }
     }
 
+    public function updatePassword(array $request)
+    {
+
+        return $this->doctorRepository->updatePassword($request);
+    }
+
     public function destroy(int $doctorId)
     {
         try {
@@ -87,4 +93,11 @@ class DoctorService
             throw $e;
         }
     }
+
+    public function getDoctorAppointments()
+    {
+        return $this->doctorRepository->getDoctorAppointments();
+    }
+
+
 }

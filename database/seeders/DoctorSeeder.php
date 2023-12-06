@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Appointment;
 use App\Models\Doctor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,10 @@ class DoctorSeeder extends Seeder
     {
         DB::table('doctors')->delete();
         DB::table('doctor_translations')->delete();
-        Doctor::factory(10)->create();
+       $doctors = Doctor::factory(10)->create();
+        $appointments = Appointment::all();
+        foreach($doctors as $doctor) {
+            $doctor->appointments()->attach($appointments->random(rand(1,7))->pluck('id')->toArray());
+        }
     }
 }

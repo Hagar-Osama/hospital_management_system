@@ -39,4 +39,3 @@
 
   <!-- custom js -->
   <script src="{{ asset('backend/assets/js/custom.js') }}"></script>
-  

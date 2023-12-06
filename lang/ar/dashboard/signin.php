@@ -14,6 +14,7 @@ return [
     'Signup with Twitter' => 'اشترك مع تويتر',
     'Admin' => 'ادمن',
     'User' => 'مستخدم',
+    'Doctor' => 'طبيب',
     'Enter your email' => 'أدخل بريدك الإلكتروني',
     'Enter your password' => 'ادخل رقمك السري',
 

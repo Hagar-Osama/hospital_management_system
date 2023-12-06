@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Http\Enums\DoctorStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Doctor extends Model
@@ -20,7 +20,6 @@ class Doctor extends Model
         'appointments',
         'email',
         'password',
-        'price',
         'phone',
         'status',
         'section_id'
@@ -29,7 +28,6 @@ class Doctor extends Model
     // 3. To define which attributes needs to be translated
     public $translatedAttributes = [
         'name',
-        'appointments'
     ];
 
     /**
@@ -52,18 +50,26 @@ class Doctor extends Model
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'status' => DoctorStatusEnum::class,
-        'appointments' => 'array',
 
     ];
 
-    public function image() : MorphOne
+    public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
     }
 
-    public function section() : BelongsTo
+    public function section(): BelongsTo
     {
         return $this->belongsTo(Section::class, 'section_id');
+    }
 
+    public function appointments(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Appointment::class,
+            'appointment_doctor',
+            'doctor_id',
+            'appointment_id'
+        );
     }
 }

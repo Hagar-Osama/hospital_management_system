@@ -3,9 +3,12 @@
 namespace App\Http\Repositories;
 
 use App\Http\Traits\UploadTrait;
+use App\Models\Appointment;
+use App\Models\AppointmentDoctor;
 use App\Models\Doctor;
 use App\Models\Image;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DoctorRepository
 {
@@ -20,6 +23,7 @@ class DoctorRepository
     {
 
         $doctor = Doctor::create($request);
+        $doctor->appointments()->attach($request['appoints']);
         Image::create([
             'file_name' => $imageName ?? null,
             'imageable_id' => $doctor->id,
@@ -38,6 +42,7 @@ class DoctorRepository
     {
         $doctor = $this->findDoctorById($doctorId);
         $doctor->update($doctors);
+        $doctor->appointments()->sync($doctors['appoints']);
         Image::updateOrCreate([
             'imageable_id' => $doctorId,
             'imageable_type' => Doctor::class
@@ -46,6 +51,14 @@ class DoctorRepository
             'file_name' => $imageName ?? $doctor->image->file_name
         ]);
         return $doctor;
+    }
+
+    public function updatePassword(array $password)
+    {
+        $doctor = $this->findDoctorById(auth()->user()->id);
+        $doctor->update($password);
+        return $doctor;
+
     }
 
     public function destroy(int $doctorId)
@@ -63,10 +76,17 @@ class DoctorRepository
 
     public function deleteAllDoctors(array $selectedDoctors)
     {
-        dd($selectedDoctors);
+        // dd($selectedDoctors);
         $doctors = Doctor::whereIn('id', $selectedDoctors)->delete();
 
         Image::whereIn('imageable_id', $selectedDoctors)->delete();
         return $doctors;
     }
+
+    public function getDoctorAppointments()
+    {
+        return Appointment::all();
+    }
+
+
 }

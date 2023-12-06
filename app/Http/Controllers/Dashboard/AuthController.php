@@ -32,6 +32,11 @@ class AuthController extends Controller
                 $request->session()->regenerate();
                 return redirect()->intended('dashboard/admin/index');
             }
+        // } elseif ($user_type == 'doctor') {
+        //     if (Auth::guard('doctor')->attempt($credentials)) {
+        //         $request->session()->regenerate();
+        //         return redirect()->intended('dashboard/doctor/index');
+        //     }
         } else {
             if (Auth::guard('web')->attempt($credentials)) {
                 $request->session()->regenerate();

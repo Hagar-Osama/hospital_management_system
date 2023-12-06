@@ -23,16 +23,6 @@ class DoctorFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'price' => fake()->randomElement([100, 200, 300, 400, 500]),
-            'appointments' => fake()->randomElement([
-                'Saturday',
-                'Sunday',
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday'
-            ]),
             'phone' => fake()->phoneNumber(),
             'section_id' => Section::all()->random()->id
         ];

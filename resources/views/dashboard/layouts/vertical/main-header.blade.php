@@ -334,6 +334,8 @@
                                Settings</a>
                            @if (auth()->guard('admin')->check())
                                <form method="POST" action="{{ route('admin.signout') }}">
+                                {{-- @elseif (auth()->guard('doctor')->check())
+                                <form method="POST" action="{{ route('doctor.signout') }}"> --}}
                                @else
                                    <form method="POST" action="{{ route('user.signout') }}">
                            @endif

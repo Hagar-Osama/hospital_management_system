@@ -72,6 +72,7 @@
                                                                 {{ trans('dashboard/signin.Admin') }}</option>
                                                             <option value="user">{{ trans('dashboard/signin.User') }}
                                                             </option>
+                                                            <option value="doctor">{{ trans('dashboard/signin.Doctor') }}</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group">

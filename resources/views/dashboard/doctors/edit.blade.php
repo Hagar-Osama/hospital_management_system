@@ -24,15 +24,6 @@
                 <h4 class="content-title mb-0 my-auto">Doctors</h4><span class="text-muted mt-1 tx-13 ms-2 mb-0">/
                     Edit Doctor</span>
             </div>
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
         </div>
 
         <div class="d-flex my-xl-auto right-content">
@@ -47,23 +38,20 @@
                 <button type="button" class="btn btn-warning  btn-icon me-2"><i class="mdi mdi-refresh"></i></button>
             </div>
             <div class="mb-xl-0">
-                <div class="btn-group dropdown">
-                    <button type="button" class="btn btn-primary">14 Aug 2019</button>
-                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
-                        id="dropdownMenuDate" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuDate"
-                        x-placement="bottom-end">
-                        <a class="dropdown-item" href="#">2015</a>
-                        <a class="dropdown-item" href="#">2016</a>
-                        <a class="dropdown-item" href="#">2017</a>
-                        <a class="dropdown-item" href="#">2018</a>
-                    </div>
-                </div>
+                <a class="btn ripple btn btn-warning" data-bs-target="#changePassword{{ $doctor->id }}"
+                    data-bs-toggle="modal" href="">Change Password</a>
             </div>
         </div>
     </div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <!-- breadcrumb -->
 
     <!-- row -->
@@ -98,18 +86,8 @@
                                     @enderror
                                 </div>
                             </div>
-                            {{-- <div class="col-6">
-                                <div class="form-group">
-                                    <label class="form-label">Password: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" name="passowrd" placeholder="Enter password" required=""
-                                        type="password">
-                                    @error('password')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div> --}}
 
-                            <div class="col-6">
+                            {{-- <div class="col-6">
                                 <div class="form-group">
                                     <label class="form-label">Price: <span class="tx-danger">*</span></label>
                                     <input class="form-control" name="price" value="{{ old('price', $doctor->price) }}"
@@ -118,7 +96,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col-6">
                                 <div class="form-group">
@@ -150,35 +128,24 @@
                                     @enderror
                                 </div>
                             </div>
-                            {{-- <div class="col-6">
-                                @php
-                                    $appointments = explode(',', $doctor->appointments);
-                                @endphp
+                            <div class="col-6">
+
                                 <div class="form-group">
                                     <label class="form-label">Appointments: <span class="tx-danger">*</span></label>
-                                    <select name="appointments[]" multiple="multiple"
+                                    <select name="appoints[]" multiple="multiple"
                                         onchange="console.log($(this).children(':selected').length)" class="selectsum1"
                                         required="">
-                                        <option value="Saturday"@if (in_array('Saturday', $appointments)) selected @else "" @endif>
-                                            Saturday</option>
-                                        <option value="Sunday"@if (in_array('Sunday', $appointments)) selected @else "" @endif>
-                                            Sunday</option>
-                                        <option value="Monday"@if (in_array('Monday', $appointments)) selected @else "" @endif>
-                                            Monday</option>
-                                        <option value="Tuesday"@if (in_array('Tuesday', $appointments)) selected @else "" @endif>
-                                            Tuesday</option>
-                                        <option
-                                            value="Wednesday"@if (in_array('Wednesday', $appointments)) selected @else "" @endif>
-                                            Wednesday</option>
-                                        <option value="Thursday"@if (in_array('Thursday', $appointments)) selected @else "" @endif>
-                                            Thursday</option>
-                                        <option value="Friday"@if (in_array('Friday', $appointments)) selected @else "" @endif>
-                                            Friday</option>
+                                        @foreach ($appointments as $appointment)
+                                            <option
+                                                value="{{$appointment->id}}"{{$doctor->appointments->contains($appointment->id) ? 'selected' : ''}}>
+                                                {{$appointment->day}}</option>
+                                        @endforeach
+
                                     </select>
-                                    @error('appointments')
+                                    @error('appoints')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                </div> --}}
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div>
@@ -189,9 +156,7 @@
                                         <input type="file" id="output" name="file_name" class="dropify"
                                             data-default-file="{{ !empty($doctor->image->file_name) ? asset('storage/doctors/' . $doctor->image->file_name) : '' }}"
                                             data-height="200" />
-
                                     </div>
-
                                 </div>
                             </div>
                             @php
@@ -201,12 +166,10 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="ckbox"><input type="checkbox" name="status"
-                                            value="{{ DoctorStatusEnum::ACTIVE }}"
+                                            value="{{ $doctor->status }}"
                                             {{ $doctor->status == DoctorStatusEnum::ACTIVE ? 'checked' : '' }}><span>Status
-                                        </span></label>
-                                    {{-- @error('status')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror --}}
+                                        </span>
+                                    </label>
                                 </div>
                             </div>
                             <div class="col-12"><button class="btn btn-main-primary pd-x-20 mg-t-10"
@@ -217,6 +180,7 @@
             </div>
         </div>
     </div>
+    @include('dashboard.doctors.change-password')
     <!-- /row -->
 @endsection('content')
 

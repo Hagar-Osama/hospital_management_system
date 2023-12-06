@@ -14,6 +14,7 @@ return [
     'Signup with Twitter' => 'Signup with Twitter',
     'Admin' => 'Admin',
     'User' => 'User',
+    'Doctor' => 'Doctor',
     'Enter your email' => 'Enter your email',
     'Enter your password' => 'Enter your password',
 

@@ -44,6 +44,7 @@ Route::group(
                 Route::get('/', [DoctorController::class, 'index'])->name('index');
                 Route::get('/create', [DoctorController::class, 'create'])->name('create');
                 Route::post('/store', [DoctorController::class, 'store'])->name('store');
+                Route::put('/update/password', [DoctorController::class, 'updatePassword'])->name('updatePassword');
                 Route::delete('/delete_all/doctors', [DoctorController::class, 'deleteAllDoctors'])->name('destroyAll');
                 Route::prefix('/{doctorId}')->group(function () {
                     Route::get('/edit', [DoctorController::class, 'edit'])->name('edit');

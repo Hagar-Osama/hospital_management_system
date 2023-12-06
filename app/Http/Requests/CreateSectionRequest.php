@@ -23,7 +23,7 @@ class CreateSectionRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2|max:100',
-            'description' => 'required|min:2|max:500',
+            'description' => 'nullable|min:2|max:500',
         ];
     }
 }
