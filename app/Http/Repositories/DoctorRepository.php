@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Http\Enums\DoctorStatusEnum;
+use App\Http\Traits\UpdateStatusTrait;
 use App\Http\Traits\UploadTrait;
 use App\Models\Appointment;
 use App\Models\AppointmentDoctor;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 class DoctorRepository
 {
     use UploadTrait;
+    use UpdateStatusTrait;
 
     public function index()
     {

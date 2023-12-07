@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\AuthController;
 use App\Http\Controllers\Dashboard\DoctorController;
 use App\Http\Controllers\Dashboard\SectionController;
+use App\Http\Controllers\Dashboard\ServiceController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
@@ -51,6 +52,18 @@ Route::group(
                     Route::put('/update', [DoctorController::class, 'update'])->name('update');
                     Route::put('/update/status', [DoctorController::class, 'updateStatus'])->name('updateStatus');
                     Route::delete('/delete', [DoctorController::class, 'destroy'])->name('destroy');
+                });
+            });
+
+               //service routes
+               Route::group(['prefix' => 'service', 'as' => 'services.'], function () {
+                Route::get('/', [ServiceController::class, 'index'])->name('index');
+                Route::get('/create', [ServiceController::class, 'create'])->name('create');
+                Route::post('/store', [ServiceController::class, 'store'])->name('store');
+                Route::prefix('/{serviceId}')->group(function () {
+                    Route::get('/edit', [ServiceController::class, 'edit'])->name('edit');
+                    Route::put('/update', [ServiceController::class, 'update'])->name('update');
+                    Route::delete('/delete', [ServiceController::class, 'destroy'])->name('destroy');
                 });
             });
         });
