@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Hash;
 class DoctorRepository
 {
     use UploadTrait;
-    use UpdateStatusTrait;
 
     public function index()
     {
