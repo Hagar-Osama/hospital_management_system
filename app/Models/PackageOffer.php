@@ -2,44 +2,38 @@
 
 namespace App\Models;
 
-use App\Http\Enums\ServiceStatusEnum;
-use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Service extends Model
+class PackageOffer extends Model
 {
     use HasFactory, Translatable;
 
     protected $fillable = [
+        'original_price',
+        'discount_price',
+        'discount_value',
+        'tax_rate',
+        'total_price',
         'name',
-        'price',
-        'description',
-        'status',
+        'notes'
     ];
+
     // 3. To define which attributes needs to be translated
     public $translatedAttributes = [
         'name',
+        'notes'
     ];
 
-     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'status' => ServiceStatusEnum::class,
-
-    ];
-
-    public function packages(): BelongsToMany
+    public function services(): BelongsToMany
     {
         return $this->belongsToMany(
-            PackageOffer::class,
+            Service::class,
             'package_service',
-            'service_id',
-            'package_offer_id'
+            'package_offer_id',
+            'service_id'
         );
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
+use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\CreateServicePackage;
 use App\Http\Controllers\Dashboard\AuthController;
 use App\Http\Controllers\Dashboard\DoctorController;
 use App\Http\Controllers\Dashboard\SectionController;
@@ -24,6 +26,7 @@ Route::group(
         'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
     ],
     function () {
+
         Route::get('signin', [AuthController::class, 'signinPage'])->name('signinPage');
         Route::post('signin', [AuthController::class, 'signin'])->name('signin');
 
@@ -66,6 +69,21 @@ Route::group(
                     Route::delete('/delete', [ServiceController::class, 'destroy'])->name('destroy');
                 });
             });
+
+            //livewire routes
+            Route::view('create/service-package', 'livewire.service-packages.include-create-service-package')->name('create.service.package');
+            Livewire::setUpdateRoute(function ($handle) {
+                return Route::post('/livewire/update', $handle);
+            });
+            Livewire::setScriptRoute(function ($handle) {
+                return Route::get('/livewire/livewire.js', $handle);
+            });
+
         });
     }
 );
+
+
+
+
+

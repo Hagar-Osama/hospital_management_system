@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SectionTranslation extends Model
+class PackageService extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description'
+        'package_offer_id',
+        'service_id',
     ];
-    public $timestamps = false;
 }

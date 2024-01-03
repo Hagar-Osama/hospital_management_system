@@ -1,3 +1,13 @@
+<title>@yield('title')</title>
+@livewireStyles
+{{-- <!-- Internal Data table css -->
+<link href="{{ asset('backend/assets/plugins/datatable/datatables.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('backend/assets/plugins/datatable/responsive.dataTables.min.css') }}" rel="stylesheet">
+<link href="{{ asset('backend/assets/plugins/datatable/responsive.bootstrap5.css') }}" rel="stylesheet">
+<link href="{{ asset('backend/assets/plugins/datatable/css/buttons.bootstrap5.min.css') }}" rel="stylesheet">
+<link href="{{ asset('backend/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
+<link href="{{ asset('backend/assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+<link href="{{ asset('backend/assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet"> --}}
 @if (app()->getLocale() == 'ar')
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('backend/assets/img/brand/favicon.png') }}" type="image/x-icon" />
@@ -67,5 +77,4 @@
 
     <!--- Animations css-->
     <link href="{{ asset('backend/assets/css/animate.css') }}" rel="stylesheet">
-
 @endif

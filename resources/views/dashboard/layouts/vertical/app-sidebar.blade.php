@@ -101,8 +101,8 @@
                        </svg><span class="side-menu__label">Services</span><i
                            class="angle fe fe-chevron-down"></i></a>
                    <ul class="slide-menu">
-                    <li><a class="slide-item" href="{{ route('admin.services.index') }}">Single Servive</a></li>
-                    <li><a class="slide-item" href="{{ url('draggablecards') }}">Services</a></li>
+                    <li><a class="slide-item" href="{{ route('admin.services.index') }}">Services</a></li>
+                    <li><a class="slide-item" href="{{ route('admin.create.service.package') }}">Service Offers Packages</a></li>
                     <li><a class="slide-item" href="{{ url('rangeslider') }}">Insurance Companies</a></li>
                     <li><a class="slide-item" href="{{ url('calendar') }}">Ambulance</a></li>
                     <li><a class="slide-item" href="{{ url('contacts') }}">Ambulance Calls</a></li>
