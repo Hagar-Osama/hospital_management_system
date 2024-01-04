@@ -133,12 +133,10 @@ class CreateServicePackage extends Component
 
             // حفظ العلاقة
             foreach ($this->packageItems as $packageItem) {
-                $package->services()->attach($packageItem['service_id'],);
+                $package->services()->sync($packageItem['service_id'],);
             }
             $this->ServiceSaved = false;
             $this->serviceUpdated = true;
-
-
         } else {
             $package = new PackageOffer();
             $totalBeforeDiscount = 0;
@@ -193,13 +191,14 @@ class CreateServicePackage extends Component
         $this->name = $package->name;
         $this->notes = $package->notes;
         $this->discount_value = intval($package->discount_value);
+        $this->taxes = $package->tax_rate;
         $this->ServiceSaved = false; //we are not saving anything here we just want to edit the package items again
-
         foreach ($package->services as $service) {
+            $quantity = $package->original_price / $service->price;
 
             $this->packageItems[] = [
                 'service_id' => $service->id,
-                'quantity' => 1,
+                'quantity' => $quantity,
                 'is_saved' => true, //service already exists and saved
                 'service_name' => $service->name,
                 'service_price' => $service->price
@@ -211,6 +210,5 @@ class CreateServicePackage extends Component
     {
         PackageOffer::find($id)->delete();
         return redirect()->back();
-
     }
 }

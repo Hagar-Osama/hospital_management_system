@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'logged_in_at',
+        'logged_out_at',
+        'logged_in_counts'
     ];
 
     /**
@@ -42,4 +45,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
 }
